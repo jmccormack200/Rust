@@ -28,9 +28,15 @@ fn main() {
 		Philosopher::new("Emma Goldman"),
 		Philosopher::new("Michel Foucult"),
 	];
+	
+	let handles: Vec<_> = philosophers.into_iter().map(|p| {
+		thread::spawn(move || {
+			p.eat();	
+		})
+	}).collect();
 
-	for p in &philosophers{
-		p.eat();
+	for h in handles {
+		h.join().unwrap();
 	}
 }
 
